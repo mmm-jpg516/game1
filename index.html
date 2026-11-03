@@ -1,0 +1,1131 @@
+<!DOCTYPE html>
+<html lang="zh-TW" class="dark">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>JoJo 奇妙冒險：雙替身猜拳大決戰</title>
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Bangers&family=Noto+Sans+TC:wght@400;700;900&display=swap" rel="stylesheet">
+    
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    colors: {
+                        jojo: {
+                            gold: '#FBBF24',
+                            purple: '#7C3AED',
+                            darkPurple: '#1E1B4B',
+                            bg: '#0F0919',
+                            cardBg: '#181124',
+                            crimson: '#DC2626',
+                            cyan: '#06B6D4'
+                        }
+                    },
+                    fontFamily: {
+                        sans: ['Noto Sans TC', 'sans-serif'],
+                        comic: ['Bangers', 'Noto Sans TC', 'cursive']
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        /* JoJo Style Custom Animations & Visual Effects */
+        body {
+            background-color: #0F0919;
+            background-image: 
+                radial-gradient(circle at 20% 20%, rgba(124, 58, 237, 0.15) 0%, transparent 40%),
+                radial-gradient(circle at 80% 80%, rgba(251, 191, 36, 0.1) 0%, transparent 40%);
+            color: #F3F4F6;
+            font-family: 'Noto Sans TC', sans-serif;
+            overflow-x: hidden;
+        }
+
+        /* Floating Menacing Onomatopoeia (ゴゴゴゴ) */
+        .menacing-text {
+            position: absolute;
+            font-family: 'Bangers', cursive, 'Noto Sans TC';
+            font-size: 2.5rem;
+            color: #A855F7;
+            text-shadow: 2px 2px 0px #000, 0 0 10px rgba(168, 85, 247, 0.8);
+            user-select: none;
+            pointer-events: none;
+            animation: floatMenacing 3s ease-in-out infinite alternate;
+        }
+
+        @keyframes floatMenacing {
+            0% { transform: translateY(0px) rotate(-5deg) scale(1); opacity: 0.7; }
+            50% { transform: translateY(-15deg) rotate(5deg) scale(1.1); opacity: 1; }
+            100% { transform: translateY(-5deg) rotate(-2deg) scale(0.95); opacity: 0.8; }
+        }
+
+        /* Stand Glows */
+        .aura-gold {
+            box-shadow: 0 0 25px rgba(251, 191, 36, 0.4), inset 0 0 15px rgba(251, 191, 36, 0.2);
+            border-color: #FBBF24 !important;
+        }
+        .aura-purple {
+            box-shadow: 0 0 25px rgba(168, 85, 247, 0.4), inset 0 0 15px rgba(168, 85, 247, 0.2);
+            border-color: #A855F7 !important;
+        }
+        .aura-cyan {
+            box-shadow: 0 0 25px rgba(6, 182, 212, 0.4), inset 0 0 15px rgba(6, 182, 212, 0.2);
+            border-color: #06B6D4 !important;
+        }
+
+        /* Time Stop Screen Flash Effect */
+        .time-stop-active {
+            animation: timeStopFlash 1.2s cubic-bezier(0.22, 1, 0.36, 1);
+            filter: grayscale(0.9) contrast(1.8) invert(0.15);
+        }
+
+        @keyframes timeStopFlash {
+            0% { filter: invert(1) contrast(3); }
+            30% { filter: grayscale(1) invert(0.8); }
+            100% { filter: grayscale(0.9) contrast(1.8) invert(0.15); }
+        }
+
+        /* GER Rewind Flash Effect */
+        .ger-rewind-active {
+            animation: gerGoldPulse 1.5s ease-in-out;
+        }
+        @keyframes gerGoldPulse {
+            0% { box-shadow: 0 0 90px rgba(251, 191, 36, 1); filter: brightness(2); }
+            50% { filter: hue-rotate(180deg); }
+            100% { box-shadow: 0 0 0px transparent; filter: brightness(1); }
+        }
+
+        /* Custom Scrollbar for Logs */
+        .custom-scrollbar::-webkit-scrollbar {
+            width: 6px;
+        }
+        .custom-scrollbar::-webkit-scrollbar-track {
+            background: rgba(15, 9, 25, 0.6);
+            border-radius: 4px;
+        }
+        .custom-scrollbar::-webkit-scrollbar-thumb {
+            background: #4C1D95;
+            border-radius: 4px;
+        }
+        .custom-scrollbar::-webkit-scrollbar-thumb:hover {
+            background: #7C3AED;
+        }
+
+        .comic-title {
+            text-shadow: 4px 4px 0px #000, -2px -2px 0px #7C3AED, 0 0 15px rgba(251, 191, 36, 0.6);
+        }
+        .btn-jojo {
+            transition: all 0.2s ease;
+            box-shadow: 4px 4px 0px #000;
+        }
+        .btn-jojo:hover {
+            transform: translate(-2px, -2px);
+            box-shadow: 6px 6px 0px #000;
+        }
+        .btn-jojo:active {
+            transform: translate(2px, 2px);
+            box-shadow: 2px 2px 0px #000;
+        }
+    </style>
+</head>
+<body class="min-h-screen flex flex-col justify-between relative overflow-y-auto">
+
+    <!-- Background Floating Elements -->
+    <div class="menacing-text top-10 left-5">ゴゴゴ</div>
+    <div class="menacing-text top-1/3 right-8">ドドド</div>
+    <div class="menacing-text bottom-20 left-12">ゴゴゴ</div>
+
+    <!-- Header Navigation -->
+    <header class="w-full bg-jojo-cardBg/80 backdrop-blur border-b border-jojo-purple/40 p-4 sticky top-0 z-30">
+        <div class="max-w-5xl mx-auto flex justify-between items-center px-2">
+            <div class="flex items-center gap-3">
+                <span class="text-3xl">⚔️</span>
+                <h1 class="text-xl md:text-2xl font-black tracking-wider text-jojo-gold font-comic comic-title">
+                    JOJO'S BIZARRE RPS: DUAL STANDS
+                </h1>
+            </div>
+            <div class="flex items-center gap-4">
+                <button id="soundToggleBtn" onclick="toggleAudio()" class="px-3 py-1.5 rounded-lg bg-purple-950 border border-purple-600/50 text-xs md:text-sm font-bold text-purple-200 hover:bg-purple-900 transition flex items-center gap-2">
+                    <span id="soundIcon">🔊</span> <span id="soundText">音效：開</span>
+                </button>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Container -->
+    <main class="w-full max-w-5xl mx-auto p-4 flex-grow flex flex-col justify-center z-10">
+
+        <!-- ================= STEP 1: LOGIN & NAME ================= -->
+        <section id="loginScreen" class="bg-jojo-cardBg/90 border-2 border-jojo-gold/60 rounded-2xl p-6 md:p-8 shadow-2xl relative my-auto">
+            <div class="text-center mb-8">
+                <h2 class="text-3xl md:text-5xl font-black text-jojo-gold font-comic tracking-wide mb-2 comic-title">
+                    替身使者登入
+                </h2>
+                <p class="text-purple-300 text-sm md:text-base">輸入尊名，準備進入【優先選替身權猜拳大賽】！</p>
+            </div>
+
+            <div class="max-w-md mx-auto mb-8">
+                <label for="playerNameInput" class="block text-purple-200 font-bold mb-2 text-center text-base md:text-lg">
+                    你的替身使者名字
+                </label>
+                <input type="text" id="playerNameInput" value="喬魯諾" placeholder="請輸入名字..." 
+                    class="w-full px-5 py-3 rounded-xl bg-purple-950/80 border-2 border-purple-500/50 text-white font-bold text-center text-lg focus:outline-none focus:border-jojo-gold transition">
+            </div>
+
+            <div class="text-center">
+                <button onclick="goToPriorityDraft()" class="btn-jojo px-10 py-4 bg-gradient-to-r from-jojo-gold via-amber-500 to-yellow-600 text-purple-950 font-black text-xl rounded-xl hover:brightness-110 transition">
+                    前往搶先選替身猜拳戰 ➡️
+                </button>
+            </div>
+        </section>
+
+        <!-- ================= STEP 2: PRIORITY RPS MINI-GAME ================= -->
+        <section id="priorityScreen" class="hidden bg-jojo-cardBg/90 border-2 border-purple-600 rounded-2xl p-6 md:p-8 shadow-2xl relative my-auto text-center">
+            <h2 class="text-2xl md:text-4xl font-black text-jojo-gold font-comic comic-title mb-2">
+                開局搶先選替身猜拳！
+            </h2>
+            <p class="text-purple-200 text-sm md:text-base mb-6">
+                在此進行一次猜拳勝負！<strong class="text-jojo-gold">贏家將獲得第一優先選擇替身的權利！</strong>
+            </p>
+
+            <!-- Priority Hands Reveal -->
+            <div class="flex items-center justify-around max-w-lg mx-auto bg-purple-950/60 p-4 rounded-xl border border-purple-800 mb-6">
+                <div>
+                    <span class="text-xs font-bold text-purple-300 block mb-1">你</span>
+                    <div id="priorityPlayerHand" class="w-20 h-20 bg-purple-900 rounded-xl flex items-center justify-center text-4xl border border-jojo-gold">❓</div>
+                </div>
+                <div class="text-xl font-black text-red-500 font-comic">VS</div>
+                <div>
+                    <span class="text-xs font-bold text-purple-300 block mb-1">電腦</span>
+                    <div id="priorityCpuHand" class="w-20 h-20 bg-purple-900 rounded-xl flex items-center justify-center text-4xl border border-red-500">❓</div>
+                </div>
+            </div>
+
+            <p id="priorityResultBanner" class="font-bold text-lg text-amber-400 mb-6 min-h-[30px]">請選擇出拳決出優先權：</p>
+
+            <div class="grid grid-cols-3 gap-4 max-w-md mx-auto mb-4">
+                <button onclick="playPriorityRPS('剪刀')" class="btn-jojo py-3 bg-purple-950 border-2 border-jojo-gold rounded-xl hover:bg-amber-400 hover:text-purple-950 font-black">
+                    ✌️ 剪刀
+                </button>
+                <button onclick="playPriorityRPS('石頭')" class="btn-jojo py-3 bg-purple-950 border-2 border-jojo-gold rounded-xl hover:bg-amber-400 hover:text-purple-950 font-black">
+                    ✊ 石頭
+                </button>
+                <button onclick="playPriorityRPS('布')" class="btn-jojo py-3 bg-purple-950 border-2 border-jojo-gold rounded-xl hover:bg-amber-400 hover:text-purple-950 font-black">
+                    ✋ 布
+                </button>
+            </div>
+        </section>
+
+        <!-- ================= STEP 3: STAND SELECTION DRAFT ================= -->
+        <section id="draftScreen" class="hidden bg-jojo-cardBg/90 border-2 border-jojo-gold rounded-2xl p-6 md:p-8 shadow-2xl relative my-auto">
+            <div class="text-center mb-6">
+                <span id="draftWinnerBadge" class="bg-jojo-gold text-purple-950 font-black px-4 py-1 rounded-full text-xs md:text-sm uppercase tracking-wider inline-block mb-2">
+                    你贏得了優先選擇權！
+                </span>
+                <h2 id="draftTitle" class="text-2xl md:text-4xl font-black text-white font-comic comic-title">
+                    請選擇你的替身
+                </h2>
+                <p id="draftSubtitle" class="text-purple-300 text-xs md:text-sm mt-1">殘餘替身將留給對手。</p>
+            </div>
+
+            <!-- 3 Stand Cards -->
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mb-8">
+                
+                <!-- Gold Experience Card -->
+                <div id="card-gold_experience" onclick="selectDraftStand('gold_experience')" 
+                    class="draft-card cursor-pointer bg-purple-950/40 border-2 border-purple-800/60 rounded-xl p-5 hover:border-jojo-gold transition-all duration-300 relative flex flex-col justify-between">
+                    <div class="absolute -top-3 right-3 bg-jojo-gold text-purple-950 text-xs font-black px-2.5 py-0.5 rounded-full shadow">
+                        感應/歸零
+                    </div>
+                    <div>
+                        <div class="text-4xl mb-2 text-center">🐞</div>
+                        <h4 class="text-xl font-black text-jojo-gold text-center mb-1">黃金體驗</h4>
+                        <p class="text-xs text-purple-300 text-center mb-3">Gold Experience</p>
+                        <div class="space-y-2 text-xs text-gray-300 border-t border-purple-900/80 pt-3">
+                            <p><strong class="text-yellow-400">一階【生命偵測】：</strong>30% 機率提示對手不會出的拳。</p>
+                            <p><strong class="text-yellow-400">二階【GER 動作歸零】：</strong>當對方達 4 勝時，清空對方勝場為 0（1 次）。</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Star Platinum Card -->
+                <div id="card-star_platinum" onclick="selectDraftStand('star_platinum')" 
+                    class="draft-card cursor-pointer bg-purple-950/40 border-2 border-purple-800/60 rounded-xl p-5 hover:border-purple-400 transition-all duration-300 relative flex flex-col justify-between">
+                    <div class="absolute -top-3 right-3 bg-purple-500 text-white text-xs font-black px-2.5 py-0.5 rounded-full shadow">
+                        指刺/時停
+                    </div>
+                    <div>
+                        <div class="text-4xl mb-2 text-center">⭐️</div>
+                        <h4 class="text-xl font-black text-purple-300 text-center mb-1">白金之星</h4>
+                        <p class="text-xs text-purple-300 text-center mb-3">Star Platinum</p>
+                        <div class="space-y-2 text-xs text-gray-300 border-t border-purple-900/80 pt-3">
+                            <p><strong class="text-purple-400">一階【流星指刺】：</strong>輸掉時 30% 機率強制將該局改為「平手」。</p>
+                            <p><strong class="text-purple-400">二階【時間停止】：</strong>當對方達 4 勝時，預知並必定獲勝 1 局（1 次）。</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Stone Free Card -->
+                <div id="card-stone_free" onclick="selectDraftStand('stone_free')" 
+                    class="draft-card cursor-pointer bg-purple-950/40 border-2 border-purple-800/60 rounded-xl p-5 hover:border-cyan-400 transition-all duration-300 relative flex flex-col justify-between">
+                    <div class="absolute -top-3 right-3 bg-cyan-500 text-purple-950 text-xs font-black px-2.5 py-0.5 rounded-full shadow">
+                        縫合/莫比烏斯
+                    </div>
+                    <div>
+                        <div class="text-4xl mb-2 text-center">🧵</div>
+                        <h4 class="text-xl font-black text-cyan-400 text-center mb-1">石之自由</h4>
+                        <p class="text-xs text-purple-300 text-center mb-3">Stone Free</p>
+                        <div class="space-y-2 text-xs text-gray-300 border-t border-purple-900/80 pt-3">
+                            <p><strong class="text-cyan-300">一階【線條縫合】：</strong>輸掉時 30% 機率抵銷對方得分。</p>
+                            <p><strong class="text-cyan-300">二階【莫比烏斯環】：</strong>當對方達 4 勝時，對方勝場 -2 且自身 +1 勝（1 次）。</p>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+
+            <div class="text-center">
+                <button id="confirmDraftBtn" onclick="confirmDraftSelection()" class="btn-jojo px-10 py-4 bg-gradient-to-r from-jojo-gold via-amber-500 to-yellow-600 text-purple-950 font-black text-xl rounded-xl hover:brightness-110 transition">
+                    確認選擇・進入替身大決戰！
+                </button>
+            </div>
+        </section>
+
+        <!-- ================= STEP 4: BATTLE DASHBOARD ================= -->
+        <section id="gameScreen" class="hidden flex flex-col gap-5 my-auto">
+            
+            <!-- Dual Player vs Dual CPU Info Panels -->
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                
+                <!-- Player Status Card -->
+                <div id="playerCardPanel" class="bg-jojo-cardBg/90 border-2 border-jojo-gold rounded-xl p-4 flex items-center justify-between shadow-lg relative overflow-hidden transition-all duration-300">
+                    <div class="flex items-center gap-4">
+                        <div id="playerStandAvatar" class="w-14 h-14 rounded-full bg-purple-900 border-2 border-jojo-gold flex items-center justify-center text-3xl shadow-inner">
+                            🐞
+                        </div>
+                        <div>
+                            <div class="flex items-center gap-2">
+                                <h3 id="displayPlayerName" class="font-black text-lg text-white">替身使者</h3>
+                                <span id="displayPlayerBadge" class="bg-jojo-gold text-purple-950 text-xs font-bold px-2 py-0.5 rounded-md">
+                                    一階
+                                </span>
+                            </div>
+                            <p id="displayPlayerStandName" class="text-xs text-jojo-gold font-bold">黃金體驗</p>
+                            
+                            <!-- Player EXP Bar -->
+                            <div class="w-36 md:w-44 bg-purple-950 h-3 rounded-full mt-2 overflow-hidden border border-purple-700/50 relative">
+                                <div id="playerExpFill" class="bg-gradient-to-r from-amber-500 to-jojo-gold h-full transition-all duration-500" style="width: 0%"></div>
+                                <span id="playerExpText" class="absolute inset-0 text-[9px] font-bold text-center leading-3 text-white drop-shadow">EXP 0/100</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="text-right">
+                        <span class="text-xs text-gray-400 font-bold block">目前勝場</span>
+                        <div class="text-3xl font-black text-jojo-gold font-comic">
+                            <span id="playerWinsCount">0</span> <span class="text-sm text-gray-400 font-normal">/ 5 勝</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- CPU Status Card -->
+                <div id="cpuCardPanel" class="bg-jojo-cardBg/90 border-2 border-red-600 rounded-xl p-4 flex items-center justify-between shadow-lg relative overflow-hidden transition-all duration-300">
+                    <div class="flex items-center gap-4">
+                        <div id="cpuStandAvatar" class="w-14 h-14 rounded-full bg-red-950 border-2 border-red-500 flex items-center justify-center text-3xl shadow-inner">
+                            🤖
+                        </div>
+                        <div>
+                            <div class="flex items-center gap-2">
+                                <h3 class="font-black text-lg text-red-200">宿敵 CPU</h3>
+                                <span id="displayCpuBadge" class="bg-red-600 text-white text-xs font-bold px-2 py-0.5 rounded-md">
+                                    一階
+                                </span>
+                            </div>
+                            <p id="displayCpuStandName" class="text-xs text-red-400 font-bold">白金之星</p>
+                            
+                            <!-- CPU EXP Bar -->
+                            <div class="w-36 md:w-44 bg-purple-950 h-3 rounded-full mt-2 overflow-hidden border border-purple-700/50 relative">
+                                <div id="cpuExpFill" class="bg-gradient-to-r from-red-600 to-pink-500 h-full transition-all duration-500" style="width: 0%"></div>
+                                <span id="cpuExpText" class="absolute inset-0 text-[9px] font-bold text-center leading-3 text-white drop-shadow">EXP 0/100</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="text-right">
+                        <span class="text-xs text-gray-400 font-bold block">電腦勝場</span>
+                        <div class="text-3xl font-black text-red-500 font-comic">
+                            <span id="cpuWinsCount">0</span> <span class="text-sm text-gray-400 font-normal">/ 5 勝</span>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+
+            <!-- Battle Battlefield Stage -->
+            <div id="battleStage" class="bg-jojo-cardBg/90 border-2 border-purple-900 rounded-2xl p-6 shadow-xl relative min-h-[260px] flex flex-col justify-between">
+                
+                <!-- Intuition Banner -->
+                <div id="intuitionBanner" class="hidden bg-amber-500/20 border border-amber-500/60 rounded-lg p-2.5 mb-4 text-center animate-pulse">
+                    <p class="text-xs md:text-sm text-amber-300 font-bold flex items-center justify-center gap-2">
+                        <span>👁️</span> <span id="intuitionText">【黃金體驗・生命偵測】：感應到對手絕對不會出【石頭】！</span>
+                    </p>
+                </div>
+
+                <!-- Hands Reveal Area -->
+                <div class="flex items-center justify-around my-4">
+                    <!-- Player Move -->
+                    <div class="text-center">
+                        <span class="text-xs font-bold text-gray-400 block mb-2">你的出拳</span>
+                        <div id="playerHandDisplay" class="w-24 h-24 md:w-28 md:h-28 rounded-2xl bg-purple-950/80 border-2 border-jojo-gold/40 flex items-center justify-center text-5xl md:text-6xl shadow-inner transition-transform duration-300">
+                            ❓
+                        </div>
+                        <span id="playerHandLabel" class="text-xs font-bold text-jojo-gold block mt-2">準備中</span>
+                    </div>
+
+                    <!-- VS Emblem -->
+                    <div class="text-center">
+                        <div class="text-2xl md:text-4xl font-black font-comic text-red-500 animate-bounce">VS</div>
+                        <span id="roundCounterBadge" class="text-[11px] font-bold text-purple-300 bg-purple-950 px-2.5 py-1 rounded-full border border-purple-700/50 block mt-2">
+                            第 1 回合
+                        </span>
+                    </div>
+
+                    <!-- CPU Move -->
+                    <div class="text-center">
+                        <span class="text-xs font-bold text-gray-400 block mb-2">電腦出拳</span>
+                        <div id="cpuHandDisplay" class="w-24 h-24 md:w-28 md:h-28 rounded-2xl bg-purple-950/80 border-2 border-red-500/40 flex items-center justify-center text-5xl md:text-6xl shadow-inner transition-transform duration-300">
+                            ❓
+                        </div>
+                        <span id="cpuHandLabel" class="text-xs font-bold text-red-400 block mt-2">思考中</span>
+                    </div>
+                </div>
+
+                <!-- Result Banner -->
+                <div id="roundResultBanner" class="text-center py-2 font-black text-lg md:text-xl min-h-[40px] flex items-center justify-center">
+                    <span class="text-gray-400 font-normal text-sm">請在下方選擇你的戰術出拳...</span>
+                </div>
+            </div>
+
+            <!-- RPS Action Controls -->
+            <div class="bg-jojo-cardBg/90 border-2 border-purple-900 rounded-2xl p-4 shadow-xl">
+                <p class="text-xs font-bold text-purple-300 text-center mb-3">選擇拳型對決：</p>
+                <div class="grid grid-cols-3 gap-3 md:gap-6">
+                    <button onclick="playRound('剪刀')" class="btn-jojo py-3 md:py-4 bg-purple-950 border-2 border-amber-400/80 rounded-xl hover:bg-amber-400 hover:text-purple-950 transition flex flex-col items-center justify-center gap-1 group">
+                        <span class="text-3xl md:text-4xl group-hover:scale-125 transition-transform">✌️</span>
+                        <span class="font-black text-sm md:text-base">剪刀</span>
+                    </button>
+                    <button onclick="playRound('石頭')" class="btn-jojo py-3 md:py-4 bg-purple-950 border-2 border-amber-400/80 rounded-xl hover:bg-amber-400 hover:text-purple-950 transition flex flex-col items-center justify-center gap-1 group">
+                        <span class="text-3xl md:text-4xl group-hover:scale-125 transition-transform">✊</span>
+                        <span class="font-black text-sm md:text-base">石頭</span>
+                    </button>
+                    <button onclick="playRound('布')" class="btn-jojo py-3 md:py-4 bg-purple-950 border-2 border-amber-400/80 rounded-xl hover:bg-amber-400 hover:text-purple-950 transition flex flex-col items-center justify-center gap-1 group">
+                        <span class="text-3xl md:text-4xl group-hover:scale-125 transition-transform">✋</span>
+                        <span class="font-black text-sm md:text-base">布</span>
+                    </button>
+                </div>
+            </div>
+
+            <!-- Dynamic Battle Log -->
+            <div class="bg-jojo-cardBg/90 border-2 border-purple-900/70 rounded-xl p-4 shadow-lg">
+                <div class="flex items-center justify-between mb-2 pb-2 border-b border-purple-900/60">
+                    <h4 class="text-xs font-bold text-purple-300 flex items-center gap-2">
+                        📜 戰鬥實況日誌 (Battle Log)
+                    </h4>
+                    <span class="text-[10px] text-gray-500">即時紀錄雙方能力發動</span>
+                </div>
+                <div id="battleLogContainer" class="h-32 overflow-y-auto custom-scrollbar space-y-2 pr-2 text-xs font-mono">
+                    <div class="text-gray-400 italic">替身大決戰開始！請選擇出拳...</div>
+                </div>
+            </div>
+
+        </section>
+
+    </main>
+
+    <!-- Footer -->
+    <footer class="w-full text-center p-3 text-xs text-purple-400/60 z-10">
+        JOJO'S BIZARRE ADVENTURE DUAL STANDS RPS &copy; 2026 - WEB EDITION
+    </footer>
+
+    <!-- ================= RESULT MODAL ================= -->
+    <div id="resultModal" class="hidden fixed inset-0 bg-black/80 backdrop-blur-sm z-50 flex items-center justify-center p-4">
+        <div class="bg-jojo-cardBg border-4 border-jojo-gold rounded-2xl max-w-lg w-full p-6 text-center shadow-2xl relative animate-scaleUp">
+            
+            <div id="modalIcon" class="text-6xl mb-3">🏆</div>
+            <h2 id="modalTitle" class="text-3xl md:text-4xl font-black text-jojo-gold font-comic comic-title mb-2">
+                勝 負 決 算 !
+            </h2>
+            <p id="modalSubtitle" class="text-sm text-purple-200 mb-6">替身使者擊敗了強大的宿敵！</p>
+
+            <div class="bg-purple-950/80 rounded-xl p-4 border border-purple-700/50 mb-6 space-y-2 text-xs md:text-sm">
+                <div class="flex justify-between">
+                    <span class="text-gray-400">最終戰況：</span>
+                    <span id="modalScoreText" class="font-bold text-jojo-gold">5 : 2</span>
+                </div>
+                <div class="flex justify-between">
+                    <span class="text-gray-400">你的替身型態：</span>
+                    <span id="modalPlayerStandText" class="font-bold text-purple-300">黃金體驗鎮魂曲</span>
+                </div>
+                <div class="flex justify-between">
+                    <span class="text-gray-400">電腦的替身型態：</span>
+                    <span id="modalCpuStandText" class="font-bold text-red-400">白金之星・世界</span>
+                </div>
+                <div class="flex justify-between">
+                    <span class="text-gray-400">總回合數：</span>
+                    <span id="modalRoundsText" class="font-bold text-white">8 回合</span>
+                </div>
+            </div>
+
+            <!-- Quick Answer Prompt Input -->
+            <div class="mb-6">
+                <label for="modalReplayInput" class="block text-xs text-purple-300 mb-2 font-bold">
+                    輸入「好」、「可以再來一次」、「好啊」或「要」開始新遊戲：
+                </label>
+                <div class="flex gap-2">
+                    <input type="text" id="modalReplayInput" placeholder="輸入：好 / 可以再來一次..." 
+                        class="flex-grow px-3 py-2 rounded-lg bg-purple-950 border border-purple-600 text-white font-bold text-sm text-center focus:outline-none focus:border-jojo-gold">
+                    <button onclick="handleReplayInputSubmit()" class="px-4 py-2 bg-purple-800 hover:bg-purple-700 font-bold text-xs rounded-lg text-white transition">
+                        確認
+                    </button>
+                </div>
+            </div>
+
+            <div class="flex gap-3 justify-center">
+                <button onclick="resetGameToStart()" class="btn-jojo px-8 py-3 bg-gradient-to-r from-jojo-gold via-amber-500 to-yellow-600 text-purple-950 font-black text-base rounded-xl">
+                    🔄 再玩一次 (REPLAY)
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- JavaScript Game Engine -->
+    <script>
+        /* ================= GAME CONSTANTS & STATE ================= */
+        const STANDS_DATA = {
+            gold_experience: {
+                id: 'gold_experience',
+                name: '黃金體驗',
+                emoji: '🐞',
+                colorClass: 'aura-gold',
+                stage1Name: '一階・黃金體驗',
+                stage2Name: '二階・黃金體驗鎮魂曲 (GER)',
+                badgeColor: 'bg-jojo-gold text-purple-950'
+            },
+            star_platinum: {
+                id: 'star_platinum',
+                name: '白金之星',
+                emoji: '⭐️',
+                colorClass: 'aura-purple',
+                stage1Name: '一階・白金之星',
+                stage2Name: '二階・白金之星・世界',
+                badgeColor: 'bg-purple-500 text-white'
+            },
+            stone_free: {
+                id: 'stone_free',
+                name: '石之自由',
+                emoji: '🧵',
+                colorClass: 'aura-cyan',
+                stage1Name: '一階・石之自由',
+                stage2Name: '二階・石之自由・莫比烏斯環',
+                badgeColor: 'bg-cyan-500 text-purple-950'
+            }
+        };
+
+        const HAND_EMOJIS = {
+            '剪刀': '✌️',
+            '石頭': '✊',
+            '布': '✋'
+        };
+
+        let gameState = {
+            playerName: "喬魯諾",
+            priorityWinner: null, // 'player' or 'cpu'
+            playerStand: "gold_experience",
+            cpuStand: "star_platinum",
+            
+            playerLevel: 1,
+            playerExp: 0,
+            playerWins: 0,
+            playerSkillUsed: { ger: false, timeStop: false, mobius: false },
+            
+            cpuLevel: 1,
+            cpuExp: 0,
+            cpuWins: 0,
+            cpuSkillUsed: { ger: false, timeStop: false, mobius: false },
+            
+            roundNum: 1,
+            audioEnabled: true,
+            intuitionNotChoice: null
+        };
+
+        let selectedDraftStandId = null;
+
+        /* ================= AUDIO SYNTHESIS (Web Audio API) ================= */
+        let audioCtx = null;
+
+        function getAudioContext() {
+            if (!audioCtx) {
+                const AudioContext = window.AudioContext || window.webkitAudioContext;
+                audioCtx = new AudioContext();
+            }
+            if (audioCtx.state === 'suspended') {
+                audioCtx.resume();
+            }
+            return audioCtx;
+        }
+
+        function toggleAudio() {
+            gameState.audioEnabled = !gameState.audioEnabled;
+            document.getElementById('soundIcon').innerText = gameState.audioEnabled ? '🔊' : '🔇';
+            document.getElementById('soundText').innerText = gameState.audioEnabled ? '音效：開' : '音效：關';
+        }
+
+        function playSound(type) {
+            if (!gameState.audioEnabled) return;
+            try {
+                const ctx = getAudioContext();
+                const now = ctx.currentTime;
+
+                if (type === 'click') {
+                    const osc = ctx.createOscillator();
+                    const gain = ctx.createGain();
+                    osc.type = 'triangle';
+                    osc.frequency.setValueAtTime(440, now);
+                    osc.frequency.exponentialRampToValueAtTime(880, now + 0.08);
+                    gain.gain.setValueAtTime(0.15, now);
+                    gain.gain.linearRampToValueAtTime(0.01, now + 0.08);
+                    osc.connect(gain);
+                    gain.connect(ctx.destination);
+                    osc.start(now);
+                    osc.stop(now + 0.08);
+                } else if (type === 'win') {
+                    const osc = ctx.createOscillator();
+                    const gain = ctx.createGain();
+                    osc.type = 'sine';
+                    osc.frequency.setValueAtTime(523.25, now);
+                    osc.frequency.setValueAtTime(659.25, now + 0.1);
+                    osc.frequency.setValueAtTime(783.99, now + 0.2);
+                    osc.frequency.setValueAtTime(1046.50, now + 0.3);
+                    gain.gain.setValueAtTime(0.2, now);
+                    gain.gain.linearRampToValueAtTime(0.01, now + 0.5);
+                    osc.connect(gain);
+                    gain.connect(ctx.destination);
+                    osc.start(now);
+                    osc.stop(now + 0.5);
+                } else if (type === 'lose') {
+                    const osc = ctx.createOscillator();
+                    const gain = ctx.createGain();
+                    osc.type = 'sawtooth';
+                    osc.frequency.setValueAtTime(300, now);
+                    osc.frequency.linearRampToValueAtTime(100, now + 0.3);
+                    gain.gain.setValueAtTime(0.2, now);
+                    gain.gain.linearRampToValueAtTime(0.01, now + 0.3);
+                    osc.connect(gain);
+                    gain.connect(ctx.destination);
+                    osc.start(now);
+                    osc.stop(now + 0.3);
+                } else if (type === 'skill') {
+                    const osc = ctx.createOscillator();
+                    const gain = ctx.createGain();
+                    osc.type = 'square';
+                    osc.frequency.setValueAtTime(150, now);
+                    osc.frequency.exponentialRampToValueAtTime(850, now + 0.4);
+                    gain.gain.setValueAtTime(0.25, now);
+                    gain.gain.linearRampToValueAtTime(0.01, now + 0.5);
+                    osc.connect(gain);
+                    gain.connect(ctx.destination);
+                    osc.start(now);
+                    osc.stop(now + 0.5);
+                } else if (type === 'timestop') {
+                    const osc = ctx.createOscillator();
+                    const gain = ctx.createGain();
+                    osc.type = 'sawtooth';
+                    osc.frequency.setValueAtTime(800, now);
+                    osc.frequency.exponentialRampToValueAtTime(60, now + 0.8);
+                    gain.gain.setValueAtTime(0.4, now);
+                    gain.gain.linearRampToValueAtTime(0.01, now + 0.9);
+                    osc.connect(gain);
+                    gain.connect(ctx.destination);
+                    osc.start(now);
+                    osc.stop(now + 0.9);
+                }
+            } catch (e) {
+                console.log("Audio error:", e);
+            }
+        }
+
+        /* ================= STEP 1 -> STEP 2: PRIORITY RPS ================= */
+        function goToPriorityDraft() {
+            playSound('click');
+            const nameInput = document.getElementById('playerNameInput').value.trim();
+            if (nameInput) gameState.playerName = nameInput;
+
+            document.getElementById('loginScreen').classList.add('hidden');
+            document.getElementById('priorityScreen').classList.remove('hidden');
+        }
+
+        function playPriorityRPS(playerHand) {
+            playSound('click');
+            const options = ['剪刀', '石頭', '布'];
+            const cpuHand = options[Math.floor(Math.random() * options.length)];
+
+            document.getElementById('priorityPlayerHand').innerText = HAND_EMOJIS[playerHand];
+            document.getElementById('priorityCpuHand').innerText = HAND_EMOJIS[cpuHand];
+
+            const banner = document.getElementById('priorityResultBanner');
+
+            if (playerHand === cpuHand) {
+                banner.innerText = "🤝 平手！重新出拳比試選替身權...";
+                playSound('click');
+            } else if (
+                (playerHand === '剪刀' && cpuHand === '布') ||
+                (playerHand === '石頭' && cpuHand === '剪刀') ||
+                (playerHand === '布' && cpuHand === '石頭')
+            ) {
+                gameState.priorityWinner = 'player';
+                playSound('win');
+                banner.innerText = `🎉 恭喜【${gameState.playerName}】贏得開局猜拳！獲得第一優先選擇權！`;
+                setTimeout(setupDraftScreen, 1000);
+            } else {
+                gameState.priorityWinner = 'cpu';
+                playSound('lose');
+                banner.innerText = `💥 電腦贏得開局猜拳！電腦優先選擇替身...`;
+                setTimeout(setupDraftScreen, 1000);
+            }
+        }
+
+        /* ================= STEP 3: DRAFTING STANDS ================= */
+        function setupDraftScreen() {
+            document.getElementById('priorityScreen').classList.add('hidden');
+            document.getElementById('draftScreen').classList.remove('hidden');
+
+            const allStands = ['gold_experience', 'star_platinum', 'stone_free'];
+
+            // Reset cards styling
+            allStands.forEach(id => {
+                const el = document.getElementById(`card-${id}`);
+                el.classList.remove('opacity-40', 'pointer-events-none', 'border-jojo-gold', 'scale-105');
+                el.style.display = 'flex';
+            });
+
+            if (gameState.priorityWinner === 'player') {
+                document.getElementById('draftWinnerBadge').innerText = `【${gameState.playerName}】贏得優先選擇權！`;
+                document.getElementById('draftTitle').innerText = "請優先選擇你的替身（三選一）";
+                document.getElementById('draftSubtitle').innerText = "剩下的替身將由電腦隨機選擇。";
+                selectDraftStand('gold_experience');
+            } else {
+                // CPU picks first randomly
+                const cpuPick = allStands[Math.floor(Math.random() * allStands.length)];
+                gameState.cpuStand = cpuPick;
+
+                document.getElementById('draftWinnerBadge').innerText = `電腦贏得優先選擇權！`;
+                document.getElementById('draftTitle').innerText = `電腦優先挑選了【${STANDS_DATA[cpuPick].name}】！`;
+                document.getElementById('draftSubtitle').innerText = "請從剩餘的兩個替身中選擇你的替身：";
+
+                // Gray out CPU's pick
+                const cpuCard = document.getElementById(`card-${cpuPick}`);
+                cpuCard.classList.add('opacity-40', 'pointer-events-none');
+
+                const remaining = allStands.filter(s => s !== cpuPick);
+                selectDraftStand(remaining[0]);
+            }
+        }
+
+        function selectDraftStand(standId) {
+            playSound('click');
+            selectedDraftStandId = standId;
+
+            document.querySelectorAll('.draft-card').forEach(card => {
+                if (!card.classList.contains('pointer-events-none')) {
+                    card.classList.remove('border-jojo-gold', 'bg-purple-900/60', 'scale-105');
+                }
+            });
+
+            const selectedCard = document.getElementById(`card-${standId}`);
+            if (selectedCard && !selectedCard.classList.contains('pointer-events-none')) {
+                selectedCard.classList.add('border-jojo-gold', 'bg-purple-900/60', 'scale-105');
+            }
+        }
+
+        function confirmDraftSelection() {
+            if (!selectedDraftStandId) return;
+
+            gameState.playerStand = selectedDraftStandId;
+
+            // If player won priority, CPU picks from remaining
+            if (gameState.priorityWinner === 'player') {
+                const remaining = ['gold_experience', 'star_platinum', 'stone_free'].filter(s => s !== gameState.playerStand);
+                gameState.cpuStand = remaining[Math.floor(Math.random() * remaining.length)];
+            }
+
+            playSound('win');
+            document.getElementById('draftScreen').classList.add('hidden');
+            document.getElementById('gameScreen').classList.remove('hidden');
+
+            updateUI();
+            logBattleEvent(`✨ 替身使者【${gameState.playerName}】覺醒【${STANDS_DATA[gameState.playerStand].name}】 vs 宿敵電腦覺醒【${STANDS_DATA[gameState.cpuStand].name}】！`, 'system');
+
+            checkPreTurnIntuition();
+        }
+
+        /* ================= STEP 4: MAIN BATTLE SYSTEM ================= */
+
+        function checkPreTurnIntuition() {
+            const intuitionBanner = document.getElementById('intuitionBanner');
+            const intuitionText = document.getElementById('intuitionText');
+            gameState.intuitionNotChoice = null;
+
+            // Player Gold Experience Intuition
+            if (gameState.playerStand === 'gold_experience' && gameState.playerLevel === 1 && Math.random() < 0.3) {
+                const options = ['剪刀', '石頭', '布'];
+                const fakeCpuChoice = options[Math.floor(Math.random() * options.length)];
+                const notOptions = options.filter(opt => opt !== fakeCpuChoice);
+                gameState.intuitionNotChoice = notOptions[Math.floor(Math.random() * notOptions.length)];
+
+                intuitionText.innerText = `【黃金體驗・生命偵測】：感應到對手這回合『絕對不會』出【${gameState.intuitionNotChoice}】！`;
+                intuitionBanner.classList.remove('hidden');
+                playSound('skill');
+                logBattleEvent(`👁️【生命偵測】發動！感應到對手絕對不會出【${gameState.intuitionNotChoice}】。`, 'skill');
+            } else {
+                intuitionBanner.classList.add('hidden');
+            }
+        }
+
+        function playRound(playerChoice) {
+            playSound('click');
+
+            const roundBanner = document.getElementById('roundResultBanner');
+            roundBanner.className = "text-center py-2 font-black text-lg md:text-xl min-h-[40px] flex items-center justify-center";
+
+            const options = ['剪刀', '石頭', '布'];
+            let cpuChoice = options[Math.floor(Math.random() * options.length)];
+
+            // Ensure Player Intuition is accurate if triggered
+            if (gameState.intuitionNotChoice && cpuChoice === gameState.intuitionNotChoice) {
+                const validChoices = options.filter(opt => opt !== gameState.intuitionNotChoice);
+                cpuChoice = validChoices[Math.floor(Math.random() * validChoices.length)];
+            }
+
+            // Display Hands
+            document.getElementById('playerHandDisplay').innerText = HAND_EMOJIS[playerChoice];
+            document.getElementById('playerHandLabel').innerText = playerChoice;
+            document.getElementById('cpuHandDisplay').innerText = HAND_EMOJIS[cpuChoice];
+            document.getElementById('cpuHandLabel').innerText = cpuChoice;
+
+            let roundWinner = 'none'; // 'player', 'cpu', 'tie'
+
+            // Check Stage 2 Time Stop Skills at Match Point (4 wins)
+            let playerUseTS = false;
+            let cpuUseTS = false;
+
+            // Player Star Platinum TS
+            if (gameState.playerStand === 'star_platinum' && gameState.playerLevel === 2 && gameState.cpuWins === 4 && !gameState.playerSkillUsed.timeStop) {
+                gameState.playerSkillUsed.timeStop = true;
+                playerUseTS = true;
+            }
+            // CPU Star Platinum TS
+            if (gameState.cpuStand === 'star_platinum' && gameState.cpuLevel === 2 && gameState.playerWins === 4 && !gameState.cpuSkillUsed.timeStop) {
+                gameState.cpuSkillUsed.timeStop = true;
+                cpuUseTS = true;
+            }
+
+            // Time Stop Resolution
+            if (playerUseTS && !cpuUseTS) {
+                triggerTimeStopEffect();
+                logBattleEvent(`⏱️【你的白金之星・世界】『The World！時間啊，停止吧！』看穿對方攻勢，必定獲勝！`, 'ultimate');
+                roundWinner = 'player';
+            } else if (cpuUseTS && !playerUseTS) {
+                triggerTimeStopEffect();
+                logBattleEvent(`⏱️🤖【電腦的白金之星・世界】發動時間停止！看穿你的行動，電腦必定獲勝！`, 'ultimate');
+                roundWinner = 'cpu';
+            } else if (playerUseTS && cpuUseTS) {
+                triggerTimeStopEffect();
+                logBattleEvent(`⏱️💥 雙方同時發動【時間停止】！時停領域相互碰撞抵銷，本回合強制平手！`, 'ultimate');
+                roundWinner = 'tie';
+            } else {
+                // Regular RPS Calculation
+                if (playerChoice === cpuChoice) {
+                    roundWinner = 'tie';
+                } else if (
+                    (playerChoice === '剪刀' && cpuChoice === '布') ||
+                    (playerChoice === '石頭' && cpuChoice === '剪刀') ||
+                    (playerChoice === '布' && cpuChoice === '石頭')
+                ) {
+                    roundWinner = 'player';
+                } else {
+                    roundWinner = 'cpu';
+                }
+            }
+
+            // Outcome & Stage 1 Defense Skill Checks
+            if (roundWinner === 'player') {
+                let cpuDefended = false;
+
+                // CPU Stage 1 Defense Skills
+                if (gameState.cpuStand === 'star_platinum' && gameState.cpuLevel === 1 && Math.random() < 0.3) {
+                    cpuDefended = true;
+                    gameState.playerExp += 10;
+                    gameState.cpuExp += 10;
+                    playSound('skill');
+                    roundBanner.innerHTML = `<span class="text-purple-300 font-bold">👉🤖【電腦・流星指刺】發動！強制將本局改為平手！</span>`;
+                    logBattleEvent(`👉🤖【電腦・流星指刺】：電腦延伸指刺！將本局失敗改為「平手」！`, 'skill');
+                } else if (gameState.cpuStand === 'stone_free' && Math.random() < 0.3) {
+                    cpuDefended = true;
+                    gameState.playerExp += 10;
+                    gameState.cpuExp += 10;
+                    playSound('skill');
+                    roundBanner.innerHTML = `<span class="text-cyan-300 font-bold">🧵🤖【電腦・線條縫合】發動！你本回合無法得分！</span>`;
+                    logBattleEvent(`🧵🤖【電腦・線條縫合】：電腦快速縫合傷口！你的得分被抵銷！`, 'skill');
+                }
+
+                if (!cpuDefended) {
+                    gameState.playerWins += 1;
+                    gameState.playerExp += 30;
+                    gameState.cpuExp += 10;
+                    playSound('win');
+                    roundBanner.innerHTML = `<span class="text-amber-400 font-bold">🎉 這回合你贏了！ (+30 EXP)</span>`;
+                    logBattleEvent(`第 ${gameState.roundNum} 回合：你出【${playerChoice}】 擊敗 電腦【${cpuChoice}】！`, 'win');
+                }
+
+            } else if (roundWinner === 'tie') {
+                gameState.playerExp += 10;
+                gameState.cpuExp += 10;
+                roundBanner.innerHTML = `<span class="text-gray-300 font-bold">🤝 平手！沒有人得分。 (+10 EXP)</span>`;
+                logBattleEvent(`第 ${gameState.roundNum} 回合：雙方皆出【${playerChoice}】，平手！`, 'tie');
+
+            } else if (roundWinner === 'cpu') {
+                let playerDefended = false;
+
+                // Player Stage 1 Defense Skills
+                if (gameState.playerStand === 'star_platinum' && gameState.playerLevel === 1 && Math.random() < 0.3) {
+                    playerDefended = true;
+                    gameState.playerExp += 10;
+                    gameState.cpuExp += 10;
+                    playSound('skill');
+                    roundBanner.innerHTML = `<span class="text-purple-300 font-bold">👉【你的流星指刺】發動！強制將本局改為平手！</span>`;
+                    logBattleEvent(`👉【你的流星指刺】：延伸指刺刺傷敵人！強制將失敗改為「平手」！`, 'skill');
+                } else if (gameState.playerStand === 'stone_free' && Math.random() < 0.3) {
+                    playerDefended = true;
+                    gameState.playerExp += 10;
+                    gameState.cpuExp += 10;
+                    playSound('skill');
+                    roundBanner.innerHTML = `<span class="text-cyan-300 font-bold">🧵【你的線條縫合】發動！電腦本回合無法得分！</span>`;
+                    logBattleEvent(`🧵【你的線條縫合】：將身體線條化縫合傷口！電腦得分無效！`, 'skill');
+                }
+
+                if (!playerDefended) {
+                    gameState.cpuWins += 1;
+                    gameState.cpuExp += 30;
+                    gameState.playerExp += 10;
+                    playSound('lose');
+                    roundBanner.innerHTML = `<span class="text-red-400 font-bold">💥 這回合電腦贏了！ (+10 EXP)</span>`;
+                    logBattleEvent(`第 ${gameState.roundNum} 回合：電腦出【${cpuChoice}】 贏了 你的【${playerChoice}】。`, 'lose');
+                }
+            }
+
+            // Check Evolutions (EXP >= 100 or Wins >= 3)
+            if (gameState.playerLevel === 1 && (gameState.playerExp >= 100 || gameState.playerWins >= 3)) {
+                gameState.playerLevel = 2;
+                playSound('skill');
+                logBattleEvent(`★【你的替身進化】突破極限！進化為【${STANDS_DATA[gameState.playerStand].stage2Name}】！`, 'ultimate');
+            }
+            if (gameState.cpuLevel === 1 && (gameState.cpuExp >= 100 || gameState.cpuWins >= 3)) {
+                gameState.cpuLevel = 2;
+                playSound('skill');
+                logBattleEvent(`🤖⚡【電腦替身進化】對手突破極限！進化為【${STANDS_DATA[gameState.cpuStand].stage2Name}】！`, 'ultimate');
+            }
+
+            // Check Stage 2 Ultimate Skills at 4 Wins (Match Point)
+            
+            // GER Return to Zero
+            if (gameState.playerStand === 'gold_experience' && gameState.playerLevel === 2 && gameState.cpuWins === 4 && !gameState.playerSkillUsed.ger) {
+                gameState.playerSkillUsed.ger = true;
+                gameState.cpuWins = 0;
+                triggerGEREffect();
+                logBattleEvent(`🌀【你的 GER 動作歸零】：『對手的行為永遠無法抵達真實！』電腦勝場歸 0！`, 'ultimate');
+            }
+            if (gameState.cpuStand === 'gold_experience' && gameState.cpuLevel === 2 && gameState.playerWins === 4 && !gameState.cpuSkillUsed.ger) {
+                gameState.cpuSkillUsed.ger = true;
+                gameState.playerWins = 0;
+                triggerGEREffect();
+                logBattleEvent(`🌀🤖【電腦 GER 動作歸零】：對手觸發絕境防禦！你的勝場被強制歸 0！`, 'ultimate');
+            }
+
+            // Möbius Ring
+            if (gameState.playerStand === 'stone_free' && gameState.playerLevel === 2 && gameState.cpuWins === 4 && !gameState.playerSkillUsed.mobius) {
+                gameState.playerSkillUsed.mobius = true;
+                gameState.cpuWins = Math.max(0, gameState.cpuWins - 2);
+                gameState.playerWins += 1;
+                playSound('skill');
+                logBattleEvent(`🌀【你的莫比烏斯環】：織成無始無終的空間環！電腦勝場 -2，你獲得 +1 勝！`, 'ultimate');
+            }
+            if (gameState.cpuStand === 'stone_free' && gameState.cpuLevel === 2 && gameState.playerWins === 4 && !gameState.cpuSkillUsed.mobius) {
+                gameState.cpuSkillUsed.mobius = true;
+                gameState.playerWins = Math.max(0, gameState.playerWins - 2);
+                gameState.cpuWins += 1;
+                playSound('skill');
+                logBattleEvent(`🌀🤖【電腦莫比烏斯環】：對手扭曲空間！你的勝場 -2，電腦獲得 +1 勝！`, 'ultimate');
+            }
+
+            gameState.roundNum += 1;
+            updateUI();
+
+            // Check Match End Condition (First to 5 wins)
+            if (gameState.playerWins >= 5 || gameState.cpuWins >= 5) {
+                setTimeout(() => {
+                    endGame(gameState.playerWins >= 5);
+                }, 600);
+            } else {
+                checkPreTurnIntuition();
+            }
+        }
+
+        /* ================= UI UPDATES & EFFECTS ================= */
+        function updateUI() {
+            const pStandInfo = STANDS_DATA[gameState.playerStand];
+            const cStandInfo = STANDS_DATA[gameState.cpuStand];
+
+            // Player UI
+            document.getElementById('displayPlayerName').innerText = gameState.playerName;
+            document.getElementById('displayPlayerStandName').innerText = pStandInfo.name;
+            document.getElementById('playerStandAvatar').innerText = pStandInfo.emoji;
+            const pBadge = document.getElementById('displayPlayerBadge');
+            pBadge.className = `text-xs font-bold px-2 py-0.5 rounded-md ${pStandInfo.badgeColor}`;
+            pBadge.innerText = gameState.playerLevel === 1 ? pStandInfo.stage1Name : pStandInfo.stage2Name;
+            document.getElementById('playerCardPanel').className = `bg-jojo-cardBg/90 border-2 rounded-xl p-4 flex items-center justify-between shadow-lg relative overflow-hidden transition-all duration-300 ${pStandInfo.colorClass}`;
+
+            const pCappedExp = Math.min(100, gameState.playerExp);
+            document.getElementById('playerExpFill').style.width = `${pCappedExp}%`;
+            document.getElementById('playerExpText').innerText = `EXP ${gameState.playerExp}/100`;
+            document.getElementById('playerWinsCount').innerText = gameState.playerWins;
+
+            // CPU UI
+            document.getElementById('displayCpuStandName').innerText = cStandInfo.name;
+            document.getElementById('cpuStandAvatar').innerText = cStandInfo.emoji;
+            const cBadge = document.getElementById('displayCpuBadge');
+            cBadge.className = `text-xs font-bold px-2 py-0.5 rounded-md ${cStandInfo.badgeColor}`;
+            cBadge.innerText = gameState.cpuLevel === 1 ? cStandInfo.stage1Name : cStandInfo.stage2Name;
+            document.getElementById('cpuCardPanel').className = `bg-jojo-cardBg/90 border-2 rounded-xl p-4 flex items-center justify-between shadow-lg relative overflow-hidden transition-all duration-300 ${cStandInfo.colorClass}`;
+
+            const cCappedExp = Math.min(100, gameState.cpuExp);
+            document.getElementById('cpuExpFill').style.width = `${cCappedExp}%`;
+            document.getElementById('cpuExpText').innerText = `EXP ${gameState.cpuExp}/100`;
+            document.getElementById('cpuWinsCount').innerText = gameState.cpuWins;
+
+            document.getElementById('roundCounterBadge').innerText = `第 ${gameState.roundNum} 回合`;
+        }
+
+        function triggerTimeStopEffect() {
+            playSound('timestop');
+            document.body.classList.add('time-stop-active');
+            setTimeout(() => {
+                document.body.classList.remove('time-stop-active');
+            }, 1200);
+        }
+
+        function triggerGEREffect() {
+            playSound('skill');
+            const battleStage = document.getElementById('battleStage');
+            battleStage.classList.add('ger-rewind-active');
+            setTimeout(() => {
+                battleStage.classList.remove('ger-rewind-active');
+            }, 1500);
+        }
+
+        function logBattleEvent(message, type = 'normal') {
+            const container = document.getElementById('battleLogContainer');
+            const logItem = document.createElement('div');
+            
+            let typeStyle = "text-gray-300";
+            if (type === 'win') typeStyle = "text-amber-400 font-bold";
+            else if (type === 'lose') typeStyle = "text-red-400";
+            else if (type === 'tie') typeStyle = "text-gray-400";
+            else if (type === 'skill') typeStyle = "text-cyan-300 font-bold";
+            else if (type === 'ultimate') typeStyle = "text-purple-300 font-black tracking-wide bg-purple-950/60 p-1 rounded border border-purple-600";
+            else if (type === 'system') typeStyle = "text-jojo-gold font-bold";
+
+            logItem.className = `leading-relaxed ${typeStyle}`;
+            logItem.innerText = message;
+            container.appendChild(logItem);
+            container.scrollTop = container.scrollHeight;
+        }
+
+        /* ================= GAME END & REPLAY ================= */
+        function endGame(isPlayerWinner) {
+            const modal = document.getElementById('resultModal');
+            const pStandInfo = STANDS_DATA[gameState.playerStand];
+            const cStandInfo = STANDS_DATA[gameState.cpuStand];
+
+            if (isPlayerWinner) {
+                playSound('win');
+                document.getElementById('modalIcon').innerText = "🏆";
+                document.getElementById('modalTitle').innerText = "勝 利 (VICTORY)!";
+                document.getElementById('modalSubtitle').innerText = `恭喜替身使者【${gameState.playerName}】擊敗對手，贏得最終勝利！`;
+            } else {
+                playSound('lose');
+                document.getElementById('modalIcon').innerText = "💀";
+                document.getElementById('modalTitle').innerText = "敗 北 (DEFEAT)";
+                document.getElementById('modalSubtitle').innerText = `很可惜，宿敵電腦搶先獲得 5 勝！下次再來挑戰！`;
+            }
+
+            document.getElementById('modalScoreText').innerText = `${gameState.playerWins} 勝 : ${gameState.cpuWins} 勝`;
+            document.getElementById('modalPlayerStandText').innerText = gameState.playerLevel === 2 ? pStandInfo.stage2Name : pStandInfo.stage1Name;
+            document.getElementById('modalCpuStandText').innerText = gameState.cpuLevel === 2 ? cStandInfo.stage2Name : cStandInfo.stage1Name;
+            document.getElementById('modalRoundsText').innerText = `${gameState.roundNum - 1} 回合`;
+
+            document.getElementById('modalReplayInput').value = '';
+            modal.classList.remove('hidden');
+        }
+
+        function handleReplayInputSubmit() {
+            const inputVal = document.getElementById('modalReplayInput').value.trim();
+            const validAnswers = ["好", "可以再來一次", "好啊", "要", "y", "yes"];
+
+            if (validAnswers.includes(inputVal.toLowerCase())) {
+                resetGameToStart();
+            } else {
+                alert("請輸入「好」、「可以再來一次」、「好啊」或「要」即可重新開始遊戲！");
+            }
+        }
+
+        function resetGameToStart() {
+            playSound('click');
+            document.getElementById('resultModal').classList.add('hidden');
+            document.getElementById('gameScreen').classList.add('hidden');
+            document.getElementById('loginScreen').classList.remove('hidden');
+
+            // Reset All State
+            gameState.playerLevel = 1;
+            gameState.playerExp = 0;
+            gameState.playerWins = 0;
+            gameState.playerSkillUsed = { ger: false, timeStop: false, mobius: false };
+
+            gameState.cpuLevel = 1;
+            gameState.cpuExp = 0;
+            gameState.cpuWins = 0;
+            gameState.cpuSkillUsed = { ger: false, timeStop: false, mobius: false };
+
+            gameState.roundNum = 1;
+            gameState.priorityWinner = null;
+            gameState.intuitionNotChoice = null;
+
+            // Reset Logs & Arena
+            document.getElementById('battleLogContainer').innerHTML = '<div class="text-gray-400 italic">替身大決戰開始！請選擇出拳...</div>';
+            document.getElementById('playerHandDisplay').innerText = '❓';
+            document.getElementById('playerHandLabel').innerText = '準備中';
+            document.getElementById('cpuHandDisplay').innerText = '❓';
+            document.getElementById('cpuHandLabel').innerText = '思考中';
+            document.getElementById('roundResultBanner').innerHTML = '<span class="text-gray-400 font-normal text-sm">請在下方選擇你的戰術出拳...</span>';
+            document.getElementById('priorityPlayerHand').innerText = '❓';
+            document.getElementById('priorityCpuHand').innerText = '❓';
+            document.getElementById('priorityResultBanner').innerText = '請選擇出拳決出優先權：';
+        }
+    </script>
+</body>
+</html>
